@@ -16,6 +16,8 @@
 
 #define CFG_CORE_OFFSET 24
 
+.extern cce_ucode_bin
+
 .section .text.start
 .globl _start
 _start:
@@ -61,7 +63,7 @@ _start:
     // Copy CCE microcode from bootrom to CCE instruction RAM
     // TODO: Do not need to do this copy if there's not a programmable
     //    CCE. Should first query platform data
-    la t0, _ucode
+    la t0, cce_ucode_bin
     li t1, CFG_CCE_UCODE_BASE_ADDR
     or t1, t1, t4
     li t2, CCE_INSTR_END
@@ -117,6 +119,3 @@ load_config:
 halt:
     j halt
 
-// Flat 64-bit wide binary of CCE ucode
-_ucode:
-    .incbin "cce_ucode.bin" 
