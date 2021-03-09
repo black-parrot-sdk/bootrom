@@ -1,6 +1,6 @@
 SECTIONS
 {
     . = 0x0000;
-    .text.start : { *(.text.start) }
-    .cce_ucode_bin : { *(.cce_ucode_bin) }
+    .text.start    : ALIGN(8) { *(.text.start)    }
+    .cce_ucode_bin : ALIGN(8) { *(.cce_ucode_bin) }
 }
