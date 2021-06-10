@@ -2,17 +2,15 @@
  * The bootrom loads the CCE ucode and the processor configuration and switches to the program for execution
  */
 
-// CCE parameters
-#define CCE_PC_WIDTH 8
-#define NUM_CCE_INSTR (1 << CCE_PC_WIDTH)
+// Sentinel value for CCE ucode
 #define CCE_INSTR_END 0xFFFFFFFFFFFFFFFF
 
 // Configuration parameters
-#define CFG_CCE_UCODE_BASE_ADDR 0x00208000
+#define CFG_CCE_MODE_ADDR    0x00200604
+#define CFG_DCACHE_MODE_ADDR 0x00200404
+#define CFG_ICACHE_MODE_ADDR 0x00200204
 
-#define CFG_CCE_MODE_ADDR 0x00200081
-#define CFG_DCACHE_MODE_ADDR 0x00200043
-#define CFG_ICACHE_MODE_ADDR 0x00200022
+#define CFG_CCE_UCODE_BASE_ADDR 0x00208000
 
 #define CFG_CORE_OFFSET 24
 
