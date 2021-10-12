@@ -11,7 +11,7 @@ bootrom.riscv: cce_ucode.o
 # Currently only one bootrom is generated at a time
 COH_PROTO ?= mesi
 cce_ucode.o:
-	$(RISCV_OBJCOPY) -I binary -O elf64-littleriscv -B riscv $(BP_UCODE_DIR)/$(COH_PROTO).bin $@ --strip-all --add-symbol cce_ucode_bin=.data:0
+	$(RISCV_OBJCOPY) -I binary -O elf64-littleriscv -B riscv $(BP_SDK_UCODE_DIR)/$(COH_PROTO).bin $@ --strip-all --add-symbol cce_ucode_bin=.data:0
 
 clean:
 	@rm -f bootrom.riscv
