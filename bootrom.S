@@ -82,16 +82,16 @@ load_config:
     //   requests before they can be handled
     li t1, CFG_CCE_MODE_ADDR
     or t1, t1, t4
-    sd t0, 0(t1)
+    sw t0, 0(t1)
 
     // Then enable D$ and I$ (order doesn't really matter)
     li t1, CFG_DCACHE_MODE_ADDR
     or t1, t1, t4
-    sd t0, 0(t1)
+    sw t0, 0(t1)
     
     li t1, CFG_ICACHE_MODE_ADDR
     or t1, t1, t4
-    sd t0, 0(t1)
+    sw t0, 0(t1)
 
     // Fence to make sure configuration is set before continuing
     fence
