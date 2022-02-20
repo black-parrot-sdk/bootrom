@@ -70,7 +70,7 @@ load_ucode:
     beq t3, t2, load_config
     sd t3, 0(t1)
     addi t0, t0, 8
-    addi t1, t1, 1
+    addi t1, t1, 8
     j load_ucode
         
     // Load the configuration data for the core. This switches the cache modes
