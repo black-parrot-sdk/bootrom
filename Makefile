@@ -4,7 +4,7 @@ RISCV_OBJCOPY ?= $(CROSS_COMPILE)objcopy
 
 .PHONY: clean
 
-RISCV_CFLAGS ?= -march=rv64imafd -mabi=lp64 -mcmodel=medany -static -nostdlib -nostartfiles
+RISCV_CFLAGS ?= -march=rv64imafdc -mabi=lp64d -mcmodel=medany -static -nostdlib -nostartfiles
 bootrom.riscv: bootrom.S cce_ucode.bin
 	$(RISCV_GCC) -o $@ $(RISCV_CFLAGS) $< -I$(@D) -Tlink.ld -static -Wl,--no-gc-sections
 
