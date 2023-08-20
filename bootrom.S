@@ -115,6 +115,7 @@ load_config:
 halt:
     j halt
 
+.balign 8
 cce_ucode_bin:
 .incbin "cce_ucode.bin"
 
