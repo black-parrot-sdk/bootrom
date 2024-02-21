@@ -14,7 +14,7 @@
 
 #define CFG_CORE_OFFSET 24
 
-.section .text.start
+.section .bootrom.text
 .globl _start
 _start:
     // Clear out the registers, useful for avoiding x-prop and for bare-metal
@@ -53,23 +53,25 @@ _start:
     li x31, 0
 
     // Read hartid to set offset for tile-level configurations
-    csrr t4, mhartid
-    slli t4, t4, CFG_CORE_OFFSET
+    csrr t6, mhartid
+    slli t6, t6, CFG_CORE_OFFSET
     
     // Copy CCE microcode from bootrom to CCE instruction RAM
     // TODO: Do not need to do this copy if there's not a programmable
     //    CCE. Should first query platform data
     la t0, cce_ucode_bin
     li t1, CFG_CCE_UCODE_BASE_ADDR
-    or t1, t1, t4
+    or t1, t1, t6
     li t2, CCE_INSTR_END
 load_ucode:
-    ld t3, 0(t0)
-    beq t3, t2, load_config
-    sd t3, 0(t1)
+    lw t3, 0(t0)
+    lw t4, 4(t0)
+    slli t5, t4, 32
+    or t5, t5, t3
+    sd t5, 0(t1)
     addi t0, t0, 8
     addi t1, t1, 8
-    j load_ucode
+    bne t5, t2, load_ucode
         
     // Load the configuration data for the core. This switches the cache modes
     //   to enable coherent, cached memory requests
@@ -79,16 +81,16 @@ load_config:
     // First switch the CCE mode so that we don't accidentally send cached
     //   requests before they can be handled
     li t1, CFG_CCE_MODE_ADDR
-    or t1, t1, t4
+    or t1, t1, t6
     sw t0, 0(t1)
 
     // Then enable D$ and I$ (order doesn't really matter)
     li t1, CFG_DCACHE_MODE_ADDR
-    or t1, t1, t4
+    or t1, t1, t6
     sw t0, 0(t1)
     
     li t1, CFG_ICACHE_MODE_ADDR
-    or t1, t1, t4
+    or t1, t1, t6
     sw t0, 0(t1)
 
     // Fence to make sure configuration is set before continuing
@@ -115,6 +117,7 @@ load_config:
 halt:
     j halt
 
+.section .bootrom.data
 .balign 8
 cce_ucode_bin:
 .incbin "cce_ucode.bin"
