@@ -6,9 +6,9 @@
 #define CCE_INSTR_END 0xFFFFFFFFFFFFFFFF
 
 // Configuration parameters
-#define CFG_CCE_MODE_ADDR    0x00200604
-#define CFG_DCACHE_MODE_ADDR 0x00200404
-#define CFG_ICACHE_MODE_ADDR 0x00200204
+#define CFG_CCE_MODE_ADDR    0x00200608
+#define CFG_DCACHE_MODE_ADDR 0x00200408
+#define CFG_ICACHE_MODE_ADDR 0x00200208
 
 #define CFG_CCE_UCODE_BASE_ADDR 0x00208000
 
@@ -55,7 +55,7 @@ _start:
     // Read hartid to set offset for tile-level configurations
     csrr t6, mhartid
     slli t6, t6, CFG_CORE_OFFSET
-    
+
     // Copy CCE microcode from bootrom to CCE instruction RAM
     // TODO: Do not need to do this copy if there's not a programmable
     //    CCE. Should first query platform data
@@ -72,7 +72,7 @@ load_ucode:
     addi t0, t0, 8
     addi t1, t1, 8
     bne t5, t2, load_ucode
-        
+
     // Load the configuration data for the core. This switches the cache modes
     //   to enable coherent, cached memory requests
 load_config:
@@ -88,7 +88,7 @@ load_config:
     li t1, CFG_DCACHE_MODE_ADDR
     or t1, t1, t6
     sw t0, 0(t1)
-    
+
     li t1, CFG_ICACHE_MODE_ADDR
     or t1, t1, t6
     sw t0, 0(t1)
@@ -99,7 +99,7 @@ load_config:
     fence.i
     // NOP for padding
     nop
-    
+
     // Set up the debug mode exit to DRAM base address
     li t0, 0x80000000
     csrw dpc, t0
@@ -111,6 +111,8 @@ load_config:
     li t2, 0
     li t3, 0
     li t4, 0
+    li t5, 0
+    li t6, 0
 
     dret
 // Should not get here
