@@ -64,8 +64,8 @@ _start:
     or t1, t1, t6
     li t2, CCE_INSTR_END
 load_ucode:
-    lw t3, 0(t0)
-    lw t4, 4(t0)
+    lwu t3, 0(t0)
+    lwu t4, 4(t0)
     slli t5, t4, 32
     or t5, t5, t3
     sd t5, 0(t1)
