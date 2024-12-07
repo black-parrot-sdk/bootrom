@@ -14,6 +14,8 @@
 
 #define CFG_CORE_OFFSET 24
 
+#define _INCBIN(x) .incbin #x
+
 .section .bootrom.text
 .globl _start
 _start:
@@ -119,8 +121,19 @@ load_config:
 halt:
     j halt
 
+
 .section .bootrom.data
 .balign 8
 cce_ucode_bin:
-.incbin "cce_ucode.bin"
+#if COH_PROTO_ei
+_INCBIN(cce_ucode.ei.bin)
+#elif COH_PROTO_msi
+_INCBIN(cce_ucode.msi.bin)
+#elif COH_PROTO_mesi
+_INCBIN(cce_ucode.mesi.bin)
+#elif COH_PROTO_moesif
+_INCBIN(cce_ucode.moesif.bin)
+#elif COH_PROTO_hybrid
+_INCBIN(cce_ucode.hybrid.bin)
+#endif
 
