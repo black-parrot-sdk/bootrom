@@ -58,6 +58,7 @@ _start:
     csrr t6, mhartid
     slli t6, t6, CFG_CORE_OFFSET
 
+#ifndef COH_PROTO_none
     // Copy CCE microcode from bootrom to CCE instruction RAM
     // TODO: Do not need to do this copy if there's not a programmable
     //    CCE. Should first query platform data
@@ -74,6 +75,7 @@ load_ucode:
     addi t0, t0, 8
     addi t1, t1, 8
     bne t5, t2, load_ucode
+#endif
 
     // Load the configuration data for the core. This switches the cache modes
     //   to enable coherent, cached memory requests
@@ -125,15 +127,15 @@ halt:
 .section .bootrom.data
 .balign 8
 cce_ucode_bin:
-#if COH_PROTO_ei
+#if defined(COH_PROTO_ei)
 _INCBIN(cce_ucode.ei.bin)
-#elif COH_PROTO_msi
+#elif defined(COH_PROTO_msi)
 _INCBIN(cce_ucode.msi.bin)
-#elif COH_PROTO_mesi
+#elif defined(COH_PROTO_mesi)
 _INCBIN(cce_ucode.mesi.bin)
-#elif COH_PROTO_moesif
+#elif defined(COH_PROTO_moesif)
 _INCBIN(cce_ucode.moesif.bin)
-#elif COH_PROTO_hybrid
+#elif defined(COH_PROTO_hybrid)
 _INCBIN(cce_ucode.hybrid.bin)
 #endif
 

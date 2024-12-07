@@ -15,11 +15,13 @@ RISCV_OBJCOPY ?= $(CROSS_COMPILE)objcopy
 
 RISCV_CFLAGS ?= -march=$(WITH_MARCH) -mabi=$(WITH_MABI) -mcmodel=medany -static -nostdlib -nostartfiles
 bootrom.%.riscv: bootrom.S cce_ucode.%.bin
-	@echo $*
+	$(RISCV_GCC) -o $@ $(RISCV_CFLAGS) -DCOH_PROTO=COH_PROTO_$* $< -I$(@D) -Tlink.ld -static -Wl,--no-gc-sections
+
+bootrom.none.riscv: bootrom.S
 	$(RISCV_GCC) -o $@ $(RISCV_CFLAGS) -DCOH_PROTO=COH_PROTO_$* $< -I$(@D) -Tlink.ld -static -Wl,--no-gc-sections
 
 # can override COH_PROTO to generate for a single protocol
-COH_PROTO ?= ei msi mesi moesif hybrid
+COH_PROTO ?= ei msi mesi moesif hybrid none
 ALL_CCE_UCODE_BIN = $(addprefix cce_ucode., $(addsuffix .bin, $(COH_PROTO)))
 ALL_BOOTROM_RISCV = $(addprefix bootrom., $(addsuffix .riscv, $(COH_PROTO)))
 
