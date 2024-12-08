@@ -1,9 +1,3 @@
-# TODO: remove
-#BP_SDK_DIR = ..
-#BP_RTL_DIR = ../../black-parrot
-#BP_TOOLS_DIR = ../../black-parrot-tools
-#include ../Makefile.common
-# end remove
 
 WITH_MARCH ?= rv64gc
 WITH_MABI ?= lp64d
