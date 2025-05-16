@@ -4,6 +4,7 @@ WITH_MABI ?= lp64d
 
 RISCV_GCC ?= $(CROSS_COMPILE)gcc
 RISCV_OBJCOPY ?= $(CROSS_COMPILE)objcopy
+RISCV_OBJDUMP ?= $(CROSS_COMPILE)objdump
 
 .PHONY: clean
 
